@@ -4,6 +4,12 @@ This image is available on DockerHUB: [raspberryvision/phpqa](https://hub.docker
 
 Very simple, based on xxx. Provides access to many QA control tools in the docker container. Note, after work, send results to the API service checker. All scripts run in container defined in `entrypoint.sh` file.
 
+## How to works?
+
+The container has access to all available tools from the CLI level, the analyzed code is attached as a volume in the container, it is mapped to the directory `/code` whose content will be analyzed.
+
+All logs and reports are saved in the `/logs/$toolName` directory.
+
 ## Available tools
 analyze - Visualizes metrics and source code
 behat - Helps to test business expectations
