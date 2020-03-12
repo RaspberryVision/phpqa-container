@@ -63,3 +63,8 @@ simple-phpunit - Provides utilities to report legacy tests and usage of deprecat
 
 ## Todo
 Consider to use multistage build - https://docs.docker.com/develop/develop-images/multistage-build/
+
+Here is a alternative image:
+https://github.com/EdgedesignCZ/phpqa
+
+Can we build both in multistage and compare it?
