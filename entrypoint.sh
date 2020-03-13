@@ -1,15 +1,14 @@
 #!/bin/sh
 
-# Initialize dirs
-
-#PHPQA_HOME_DIR=~/phpqa
-#PHPQA_CODE_DIR=$PHPQA_HOME_DIR/code
-#PHPQA_LOGS_DIR=$PHPQA_HOME_DIR/logs
-
 # INTERNAL FUNCTIONS - @TODO - extract to separently file 
 printToConsole()
 {
 	printf "\n*** $1 ***" | tr a-z A-Z
+}
+
+printEmptyLine()
+{
+	printf "\n"
 }
 
 checkHomeDir()
@@ -18,10 +17,11 @@ checkHomeDir()
 	then
 		printToConsole "PHPQA HOME DIRECTORY DOESN'T EXIST"
 		printToConsole "TRY TO CREATE DIRECTORY AT $PHPQA_HOME_DIR"
-		mkdir $PHPQA_HOME_DIR
+		mkdir -p $PHPQA_HOME_DIR
 	fi
 	cd $PHPQA_HOME_DIR
 	printToConsole "Change working directory to $PHPQA_HOME_DIR"
+	printEmptyLine
 }
 
 checkCodeDir()
@@ -29,9 +29,10 @@ checkCodeDir()
 	if [ ! -d $PHPQA_CODE_DIR ]
 	then
 		printToConsole "CODE DIRECTORY DOESN'T EXIST - LACK CODE TO ANALYZE - EXIT"
-		#exit
+		exit
 	fi
 	printToConsole "Directory with code to analyze: $PHPQA_CODE_DIR"
+	printEmptyLine
 }
 
 checkLogsDir() 
@@ -39,9 +40,10 @@ checkLogsDir()
 	if [ ! -d $PHPQA_LOGS_DIR ]
 	then
 		printToConsole "Logs directory ($PHPQA_LOGS_DIR) doesn't exist. Try to create it."
-		mkdir $PHPQA_LOGS_DIR && chmod -R 777 $PHPQA_LOGS_DIR
+		mkdir -p $PHPQA_LOGS_DIR -m 777
 	fi
 	printToConsole "Diretory for result reports: $PHPQA_LOGS_DIR"
+	printEmptyLine
 }
 
 runTool()
@@ -51,13 +53,17 @@ runTool()
 	mkdir -p $PHPQA_LOGS_DIR/$1
 	$1 $PHPQA_CODE_DIR > $PHPQA_LOGS_DIR/$1/result.log
 	printToConsole "Finish $1"
-	reportTool $1
+	printEmptyLine
 }
 
-reportTool()
+sendReport() 
 {
-	printToConsole "Sending results to Checker..."
-	printToConsole "Analyze report successfully sended to Checker."
+	# SystemStatus request
+	url=https://temptemp3.github.io
+ 
+	curl ${url} -I -o headers -s
+
+	printToConsole "Successfully sended report"
 }
 
 # Starting info
@@ -70,11 +76,9 @@ checkCodeDir
 checkLogsDir
 
 # RUN QA TOOLS
-printToConsole "Running tools..."
+printToConsole "Running tools"
 
 # PHPLOC - basic info about code
 runTool phploc
-runTool phpunit
-runTool phpmd
 
-# SEND RESULTS TO CHECKER API - todo
+sendReport
