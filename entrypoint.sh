@@ -80,5 +80,6 @@ printToConsole "Running tools"
 
 # PHPLOC - basic info about code
 runTool phploc
+runTool "analyze analyze /code"
 
 sendReport
