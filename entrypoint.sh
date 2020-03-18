@@ -82,5 +82,6 @@ printToConsole "Running tools"
 
 # PHPLOC - basic info about code
 runTool phploc $PHPQA_CODE_DIR
+runTool phpunit $PHPQA_TEST_DIR
 
 sendReport
