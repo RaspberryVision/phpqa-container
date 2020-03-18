@@ -60,10 +60,12 @@ sendReport()
 {
 	# SystemStatus request
 	url=https://temptemp3.github.io
- 
-	curl ${url} -I -o headers -s
 
-	printToConsole "Successfully sended report"
+	if curl --fail -X POST -d@/phpqa/logs/phploc/result.log ${url}; then
+        printToConsole "Successfully sended report"
+    else
+        echo "fail"
+    fi;
 }
 
 # Starting info
@@ -79,63 +81,6 @@ checkLogsDir
 printToConsole "Running tools"
 
 # PHPLOC - basic info about code
-runTool phploc --help
-runTool analyze analyze --help
-runTool behat --help
-runTool churn --help
-runTool composer-normalize --help
-runTool composer-unused --help
-runTool dephpend --help
-runTool deprecation-detector --help
-runTool deenvironmentptrac --help
-runTool diffFilter --help
-runTool ecs --help
-runTool infection --help
-runTool parallel-lint --help
-runTool paratest --help
-runTool pdepend --help
-runTool phan --help
-runTool php-coupling-detector --help
-runTool php-cs-fixer --help
-runTool php-formatter --help
-runTool php-semver-checker --help
-runTool phpDocumentor --help
-runTool phpbench --help
-runTool phpa --help
-runTool phpat --help
-runTool phpca --help
-runTool phpcb --help
-runTool phpcbf --help
-runTool phpcf --help
-runTool phpcov --help
-runTool phpcpd --help
-runTool phpcs --help
-runTool phpda --help
-runTool phpdoc-to-typehint --help
-runTool phpinsights --help
-runTool phplint --help
-runTool phploc --help
-runTool phpmd --help
-runTool phpmetrics --help
-runTool phpmnd --help
-runTool phpspec --help
-runTool phpstan --help
-runTool phpstan-deprecation-rules --help
-runTool phpstan-ergebnis-rules --help
-runTool phpstan-strict-rules --help
-runTool phpstan-doctrine --help
-runTool phpstan-phpunit --help
-runTool phpstan-symfony --help
-runTool phpstan-beberlei-assert --help
-runTool phpstan-webmozart-assert --help
-runTool phpstan-exception-rules --help
-runTool phpunit --help
-runTool psalm --help
-runTool psecio-parse --help
-runTool rector --help
-runTool roave-backward-compatibility-check --help
-runTool security-checker --help
-runTool simple-phpunit --help
-
+runTool phploc $PHPQA_CODE_DIR
 
 sendReport

@@ -4,18 +4,33 @@ This image is available on DockerHUB: [raspberryvision/phpqa](https://hub.docker
 
 Very simple, based on https://github.com/jakzal/phpqa container. Provides access to many QA control tools in the docker container. Note, after work, send results to the API service checker. All scripts run in container defined in `entrypoint.sh` file.
 
+## How to run
+
+```
+docker run -v "$(pwd)/dev/:/phpqa/" --env-file ./.env -it raspberryvision/phpqa
+```
+
+Example code is available in `code` directory.
+
 ## How to works?
 
 The container has access to all available tools from the CLI level, the analyzed code is attached as a volume in the container, it is mapped to the directory `/code` whose content will be analyzed.
 
 All logs and reports are saved in the `/logs/$toolName` directory.
 
+Common commands:
+
+Rebuild image:
+```
+sudo docker build -t raspberryvision/phpqa .
+```
+
 ## Environments
 
-**PHPQA_HOME_DIR** - main directory for QA operations (default `/phpqa`).
-**PHPQA_CODE_DIR** - the catalog that will be analyzed (default `/phpqa/code`).
-**PHPQA_LOGS_DIR** - directory for logs and analysis reports (default `/phpqa/logs`).
-**PHPQA_TOOLS** - list of tools to be launched along with startup parameters (default `PHPLOC`).
+**PHPQA_HOME_DIR** - main directory for QA operations (default `/phpqa`).  
+**PHPQA_CODE_DIR** - the catalog that will be analyzed (default `/phpqa/code`).  
+**PHPQA_LOGS_DIR** - directory for logs and analysis reports (default `/phpqa/logs`).  
+**PHPQA_TOOLS** - list of tools to be launched along with startup parameters (default `PHPLOC`).  
 
 ## Available tools
 **analyze** - Visualizes metrics and source code  
@@ -26,8 +41,8 @@ All logs and reports are saved in the `/logs/$toolName` directory.
 **dephpend** - Detect flaws in your architecture  
 **deprecation-detector** - Finds usages of deprecated code  
 **deenvironmentptrac** - Enforces dependency rules between software layers  
-**diffFilter** - Applies QA tools to run on a single pull request  
-**ecs** - Sets up and runs coding standard checks  
+**diffFilter** - [diffFilter](https://github.com/exussum12/coverageChecker)Applies QA tools to run on a single pull request  
+**ecs** - [ecs](https://github.com/symplify/easy-coding-standard) Sets up and runs coding standard checks  
 **infection** - AST based PHP Mutation Testing Framework  
 **parallel-lint** - Checks PHP file syntax  
 **paratest** - Parallel testing for PHPUnit  
