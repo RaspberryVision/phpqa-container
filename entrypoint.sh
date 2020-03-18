@@ -46,6 +46,17 @@ checkLogsDir()
 	printEmptyLine
 }
 
+checkTestsDir()
+{
+    if [ ! -d "$PHPQA_TEST_DIR" ]
+	then
+		printToConsole "Tests directory doesn't exist."
+		return 1
+	fi
+
+	return 0
+}
+
 runTool()
 {
 	printToConsole "Running $1"
@@ -84,4 +95,9 @@ printToConsole "Running tools"
 runTool phploc $PHPQA_CODE_DIR
 
 # PHPUNIT - tests suites
-runTool phpunit $PHPQA_TEST_DIR
+checkTestsDir
+
+if [ "$?" == 0 ]
+then
+	runTool phpunit $PHPQA_TEST_DIR
+fi
