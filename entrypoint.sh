@@ -49,11 +49,11 @@ checkLogsDir()
 runTool()
 {
 	printToConsole "Running $1"
-	rm -Rf $PHPQA_LOGS_DIR/$1
-	mkdir -p $PHPQA_LOGS_DIR/$1
-	$@ > $PHPQA_LOGS_DIR/$1/result.log
+	rm -Rf $PHPQA_LOGS_DIR/$1.log
+	$@ >> $PHPQA_LOGS_DIR/$1.log
 	printToConsole "Finish $1"
 	printEmptyLine
+	sendReport $1
 }
 
 sendReport() 
@@ -61,7 +61,7 @@ sendReport()
 	# SystemStatus request
 	url=https://temptemp3.github.io
 
-	if curl --fail -X POST -d@/phpqa/logs/phploc/result.log ${url}; then
+	if curl --fail -X POST -d@/phpqa/logs/$1.log ${url}; then
         printToConsole "Successfully sended report"
     else
         echo "fail"
@@ -82,6 +82,6 @@ printToConsole "Running tools"
 
 # PHPLOC - basic info about code
 runTool phploc $PHPQA_CODE_DIR
-runTool phpunit $PHPQA_TEST_DIR
 
-sendReport
+# PHPUNIT - tests suites
+runTool phpunit $PHPQA_TEST_DIR
