@@ -59,7 +59,11 @@ runTool() {
 sendReport() {
   url=http://$PHPQA_ENGINEER_HOST/index.php/api/report/$1
 
-  if curl --fail -X POST -d@$PHPQA_LOGS_DIR/$1.log ${url}; then
+  machine=$PHPQA_MACHINE_NAME
+  component=$PHPQA_COMPONENT_NAME
+  file=$PHPQA_LOGS_DIR/$1.log
+
+  if curl --fail -X POST -F build=$build -F machine=$machine -F component=$component -F report=@/$PHPQA_LOGS_DIR/$1.log ${url}; then
     printToConsole "Successfully sended report"
   else
     echo "fail"
@@ -69,6 +73,8 @@ sendReport() {
 isEngineerServiceReady() {
 
   printToConsole "Waiting for Engineer Service"
+  printToConsole "Reporting build: {$1}"
+  printEmptyLine
 
   until nc -z $PHPQA_ENGINEER_HOST $PHPQA_ENGINEER_PORT; do
     printf '.'
@@ -76,7 +82,10 @@ isEngineerServiceReady() {
   done
 
   echo "** SUCCESS ** | Engineer Service ready!"
+  printEmptyLine
 }
+
+build=$(head -200 /dev/urandom | cksum | cut -f1 -d " ")
 
 # Starting info
 checkHomeDir
